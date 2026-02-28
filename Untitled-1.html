@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chatbot Luật Biển Quốc Tế</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Segoe UI, sans-serif;}
+
+body{
+background:#e4e6eb;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.chat-wrapper{
+width:100%;
+max-width:420px;
+height:95vh;
+background:white;
+border-radius:15px;
+display:flex;
+flex-direction:column;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+overflow:hidden;
+}
+
+.chat-header{
+background:#1877f2;
+color:white;
+padding:15px;
+font-weight:bold;
+text-align:center;
+}
+
+.chat-body{
+flex:1;
+padding:15px;
+overflow-y:auto;
+background:#f0f2f5;
+display:flex;
+flex-direction:column;
+}
+
+.message{
+max-width:80%;
+padding:10px 14px;
+border-radius:18px;
+margin-bottom:10px;
+font-size:14px;
+white-space:pre-line;
+animation:fadeIn 0.3s ease;
+}
+
+.user{
+background:#1877f2;
+color:white;
+align-self:flex-end;
+border-bottom-right-radius:4px;
+}
+
+.bot{
+background:#e4e6eb;
+align-self:flex-start;
+border-bottom-left-radius:4px;
+}
+
+.typing{
+font-style:italic;
+font-size:13px;
+color:gray;
+margin-bottom:8px;
+}
+
+.chat-footer{
+display:flex;
+padding:10px;
+border-top:1px solid #ddd;
+background:white;
+}
+
+.chat-footer input{
+flex:1;
+padding:10px;
+border-radius:20px;
+border:1px solid #ccc;
+outline:none;
+}
+
+.chat-footer button{
+margin-left:8px;
+padding:10px 15px;
+border:none;
+border-radius:20px;
+background:#1877f2;
+color:white;
+cursor:pointer;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(5px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+@media(max-width:500px){
+.chat-wrapper{height:100vh;border-radius:0;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="chat-wrapper">
+<div class="chat-header">🌊 Luật Biển Quốc Tế Chatbot</div>
+
+<div class="chat-body" id="chatBody">
+<div class="message bot">
+Xin chào 👋  
+Hãy đặt câu hỏi về Luật Biển Quốc Tế.  
+Ví dụ:  
+- Luật biển quốc tế là gì?  
+- EEZ là gì?  
+- Nguyên tắc của luật biển?  
+- Phân định biển như thế nào?
+</div>
+</div>
+
+<div class="chat-footer">
+<input type="text" id="input" placeholder="Nhập câu hỏi...">
+<button onclick="send()">Gửi</button>
+</div>
+</div>
+
+<script>
+
+function send(){
+let input=document.getElementById("input");
+let text=input.value.trim();
+if(text==="") return;
+
+addMessage(text,"user");
+input.value="";
+showTyping();
+
+setTimeout(()=>{
+removeTyping();
+let reply=getReply(text);
+addMessage(reply,"bot");
+},800);
+}
+
+function addMessage(text,type){
+let body=document.getElementById("chatBody");
+let msg=document.createElement("div");
+msg.classList.add("message",type);
+msg.innerText=text;
+body.appendChild(msg);
+body.scrollTop=body.scrollHeight;
+}
+
+function showTyping(){
+let body=document.getElementById("chatBody");
+let typing=document.createElement("div");
+typing.classList.add("typing");
+typing.id="typing";
+typing.innerText="Bot đang nhập...";
+body.appendChild(typing);
+body.scrollTop=body.scrollHeight;
+}
+
+function removeTyping(){
+let typing=document.getElementById("typing");
+if(typing) typing.remove();
+}
+
+function getReply(input){
+
+input=input.toLowerCase();
+
+if(input.includes("luật biển") || input.includes("khái niệm")){
+return `📘 LUẬT BIỂN QUỐC TẾ
+
+Là hệ thống các quy phạm pháp lý điều chỉnh:
+• Quy chế pháp lý các vùng biển
+• Quyền và nghĩa vụ quốc gia
+• Khai thác tài nguyên biển
+• Tự do hàng hải, hàng không
+• Bảo vệ môi trường biển
+• Giải quyết tranh chấp
+
+Văn bản quan trọng nhất: UNCLOS 1982.`;
+}
+
+if(input.includes("eez") || input.includes("đặc quyền kinh tế")){
+return `🌊 VÙNG ĐẶC QUYỀN KINH TẾ (EEZ)
+
+• Tối đa 200 hải lý
+• Quyền khai thác tài nguyên
+• Quyền tài phán về môi trường, nghiên cứu khoa học
+• Các nước khác vẫn được tự do hàng hải`;
+}
+
+if(input.includes("lãnh hải")){
+return `🌊 LÃNH HẢI
+
+• Tối đa 12 hải lý
+• Chủ quyền đầy đủ
+• Tàu nước ngoài được đi qua không gây hại`;
+}
+
+if(input.includes("nội thủy")){
+return `🌊 NỘI THỦY
+
+• Nằm phía trong đường cơ sở
+• Chủ quyền hoàn toàn
+• Tàu nước ngoài phải được phép`;
+}
+
+if(input.includes("nguyên tắc")){
+return `⚖ NGUYÊN TẮC CƠ BẢN
+
+• Tự do biển cả
+• Bình đẳng chủ quyền
+• Sử dụng vì mục đích hòa bình
+• Không dùng vũ lực
+• Bảo vệ môi trường
+• Hợp tác quốc tế`;
+}
+
+if(input.includes("phân định")){
+return `📍 PHÂN ĐỊNH BIỂN
+
+• Đàm phán hòa bình
+• Nguyên tắc công bằng
+• Trung tuyến / cách đều
+• Xem xét hoàn cảnh đặc biệt`;
+}
+
+if(input.includes("tranh chấp") || input.includes("giải quyết")){
+return `⚖ GIẢI QUYẾT TRANH CHẤP
+
+• Đàm phán
+• Trọng tài quốc tế
+• Tòa án quốc tế
+• Tòa án Luật biển quốc tế`;
+}
+
+if(input.includes("nguồn")){
+return `📚 NGUỒN LUẬT BIỂN
+
+• Điều ước quốc tế (UNCLOS 1982)
+• Tập quán quốc tế
+• Phán quyết tòa án
+• Nghị quyết quốc tế`;
+}
+
+return "Xin lỗi, tôi chưa hiểu rõ câu hỏi. Vui lòng hỏi về: EEZ, lãnh hải, nội thủy, nguyên tắc, phân định, tranh chấp...";
+}
+
+</script>
+
+</body>
+</html>
